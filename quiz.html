@@ -44,43 +44,15 @@
 
     <div class="panel">
       <a class="btn" id="goWish" href="wish.html">去许愿 →</a>
+      <p class="tip">（到下一页会自动切换为《夜的钢琴曲》）</p>
     </div>
   </div>
 
- <!-- 放在页面底部按钮面板附近 -->
-<audio id="bgm" src="a little story.mp3"></audio>
-
-<script>
-// 与祝福页一致的续播逻辑（只“续播”，不“首播”）
-const KEY = 'bgmProgress';
-const audio = document.getElementById('bgm');
-
-function save() {
-  try {
-    sessionStorage.setItem(KEY, JSON.stringify({
-      t: audio.currentTime,
-      playing: !audio.paused,
-      src: audio.currentSrc
-    }));
-  } catch(e){}
-}
-async function resume() {
-  const s = JSON.parse(sessionStorage.getItem(KEY) || '{}');
-  if (s.src === audio.currentSrc && typeof s.t === 'number') {
-    audio.currentTime = Math.max(0, s.t - 0.3);
-  }
-  if (s.playing) {
-    try { await audio.play(); } catch(e){}
-  }
-}
-setInterval(save, 1000);
-window.addEventListener('beforeunload', save);
-document.addEventListener('visibilitychange', () => { if (document.hidden) save(); });
-resume();
-</script>
-
+  <!-- 这里只负责“续播”，不首播 -->
+  <audio id="bgm" class="audio" controls src="a little story.mp3"></audio>
 
   <script>
+    // 小彩带提示
     const conf = ["🎉","✨","🎊","💖","💫","🌟"];
     function pop(text){
       alert(text);
@@ -97,10 +69,38 @@ resume();
     document.querySelectorAll('.opt').forEach(el=>{
       el.addEventListener('click',()=>pop(el.dataset.pop));
     });
+
     // 读取身份并拼接跳转
     const who = new URLSearchParams(location.search).get('for') || sessionStorage.getItem('who') || 'dad';
     sessionStorage.setItem('who',who);
     document.getElementById('goWish').href = 'wish.html?for='+who;
+
+    // 连续播放：只“续播”，不“首播”
+    const KEY = 'bgmProgress';
+    const audio = document.getElementById('bgm');
+
+    function save() {
+      try {
+        sessionStorage.setItem(KEY, JSON.stringify({
+          t: audio.currentTime,
+          playing: !audio.paused,
+          src: audio.currentSrc
+        }));
+      } catch(e){}
+    }
+    async function resume() {
+      const s = JSON.parse(sessionStorage.getItem(KEY) || '{}');
+      if (s.src === audio.currentSrc && typeof s.t === 'number') {
+        audio.currentTime = Math.max(0, s.t - 0.3);
+      }
+      if (s.playing) {
+        try { await audio.play(); } catch(e){}
+      }
+    }
+    setInterval(save, 1000);
+    window.addEventListener('beforeunload', save);
+    document.addEventListener('visibilitychange', () => { if (document.hidden) save(); });
+    resume();
   </script>
 </body>
 </html>

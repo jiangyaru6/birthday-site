@@ -1,0 +1,52 @@
+
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <title>爸爸妈妈生日快乐</title>
+    <link rel="stylesheet" href="style.css">
+</head>
+<body>
+    <audio id="bgm" autoplay loop>
+        <source src="a_little_story.mp3" type="audio/mpeg">
+    </audio>
+
+    <div class="container">
+        <h1>🎂 生日快乐！ 🎉</h1>
+        <p>亲爱的爸爸妈妈，谢谢你们一直以来的陪伴和爱。这是我为你们准备的小小惊喜网页，愿它能为你们带来一点温暖和笑容。</p>
+        <div class="buttons">
+            <a href="#dad" class="btn">点这里看爸爸的祝福</a>
+            <a href="#mom" class="btn">点这里看妈妈的祝福</a>
+        </div>
+
+        <section id="dad" class="message">
+            <h2>🎈 爸爸 46 岁生日快乐 🎈</h2>
+            <p>谢谢你总是在我身后默默守护，那些日子里你的身影，是我坚持的勇气源泉。</p>
+            <img src="dad1.jpg" alt="Dad Photo 1">
+            <img src="dad2.jpg" alt="Dad Photo 2">
+        </section>
+
+        <section id="mom" class="message">
+            <h2>🌷 妈妈 42 岁生日快乐 🌷</h2>
+            <p>你温柔的笑容陪我走过了最难的时光，愿你的每一天都像今天一样被爱包围。</p>
+            <img src="mom1.jpg" alt="Mom Photo 1">
+            <img src="mom2.jpg" alt="Mom Photo 2">
+        </section>
+
+        <section class="quiz">
+            <h2>🎁 互动小问答 🎁</h2>
+            <div id="quiz-container"></div>
+        </section>
+
+        <section class="wish">
+            <h2>🕯️ 许个愿吧 🕯️</h2>
+            <p>闭上眼睛，在心里悄悄许个愿吧。音乐响起的那一刻，你的愿望已经启程。</p>
+            <audio controls>
+                <source src="night_piano_song.mp3" type="audio/mpeg">
+            </audio>
+        </section>
+    </div>
+
+    <script src="script.js"></script>
+</body>
+</html>

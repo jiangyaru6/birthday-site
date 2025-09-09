@@ -1,0 +1,39 @@
+
+body {
+    font-family: 'Arial', sans-serif;
+    background: linear-gradient(#fffdf0, #ffe8e8);
+    margin: 0;
+    padding: 0;
+}
+.container {
+    padding: 20px;
+    text-align: center;
+}
+h1, h2 {
+    color: #ff6666;
+}
+.buttons {
+    margin: 20px 0;
+}
+.btn {
+    background-color: #ff9999;
+    padding: 10px 20px;
+    margin: 0 10px;
+    text-decoration: none;
+    color: white;
+    border-radius: 5px;
+}
+img {
+    width: 200px;
+    margin: 10px;
+    border-radius: 10px;
+}
+.message {
+    margin-top: 30px;
+}
+.quiz, .wish {
+    margin-top: 40px;
+    padding: 20px;
+    background-color: #fff0f0;
+    border-radius: 10px;
+}

@@ -1,0 +1,69 @@
+<!doctype html><html lang="zh-CN"><head>
+<meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>互动小问答</title>
+<link rel="stylesheet" href="style.css">
+</head><body>
+<div class="container">
+  <div class="center">
+    <h2>🎁 互动小问答 🎁</h2>
+  </div>
+
+  <div class="panel q-wrap">
+    <h3 class="center">你最希望实现的愿望是？</h3>
+    <div class="center">
+      <span class="opt"><button data-tip="💰 金币从天而降！暴富暴富！">A. 一夜暴富</button></span>
+      <span class="opt"><button data-tip="🌿 我会照顾好自己，让你少担心">B. 健康平安</button></span>
+      <span class="opt"><button data-tip="🏠 我永远记得你给的温暖">C. 家庭和睦</button></span>
+      <span class="opt"><button data-tip="🌈 好运常伴你身边">D. 万事顺意</button></span>
+    </div>
+  </div>
+
+  <div class="panel q-wrap">
+    <h3 class="center">你打开这个网页的第一反应？</h3>
+    <div class="center">
+      <span class="opt"><button data-tip="当然是我亲手做的！">A. 哈哈，这是我宝贝做的吗？</button></span>
+      <span class="opt"><button data-tip="不许哭，我还会一直做～">B. 有点酸…</button></span>
+      <span class="opt"><button data-tip="嘿嘿，我是不是有点厉害">C. 这还能互动？</button></span>
+      <span class="opt"><button data-tip="这首歌我挑了好久～">D. 哇，还有音乐！</button></span>
+    </div>
+  </div>
+
+  <div class="panel q-wrap">
+    <h3 class="center">你觉得我是什么样的小孩？</h3>
+    <div class="center">
+      <span class="opt"><button data-tip="你们的爱我都记在心上">A. 贴心</button></span>
+      <span class="opt"><button data-tip="放心，我会好好过自己的人生">B. 有主见</button></span>
+      <span class="opt"><button data-tip="长大啦，会顶嘴一点点">C. 偶尔叛逆</button></span>
+      <span class="opt"><button data-tip="嘴甜是家传">D. 脾气臭但嘴甜</button></span>
+    </div>
+  </div>
+
+  <div class="panel q-wrap">
+    <h3 class="center">你希望我接下来更该做的是什么？</h3>
+    <div class="center">
+      <span class="opt"><button data-tip="知道啦，已经在学了📚">A. 好好读书</button></span>
+      <span class="opt"><button data-tip="会的，不让你们想我太久🏠">B. 多回家看看</button></span>
+      <span class="opt"><button data-tip="不急，遇到对的人才有趣❤️">C. 谈个靠谱恋爱</button></span>
+      <span class="opt"><button data-tip="好吧…我争取早点睡😴">D. 吃饱睡好不熬夜</button></span>
+    </div>
+  </div>
+
+  <div class="panel center">
+    <div class="audio-bar">
+      <audio id="bgm" src="assets/a little story.mp3" preload="auto"></audio>
+      <button id="play">播放音乐</button>
+      <button id="pause">暂停</button>
+    </div>
+    <br>
+    <button id="nextToWish" class="btn">去许愿 →</button>
+    <p class="note">（到下一页会自动切换为《夜的钢琴曲》）</p>
+  </div>
+
+  <footer class="center"><a class="btn ghost" href="index.html">← 返回首页</a></footer>
+</div>
+<div class="toast"></div>
+<script type="module">
+  import {setupAudio, bindQuiz} from './script.js';
+  setupAudio('#bgm'); bindQuiz();
+</script>
+</body></html>

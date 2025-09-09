@@ -10,73 +10,64 @@
   <div class="container center">
     <h2>🌷 妈妈 42 岁生日快乐 🌷</h2>
     <p>你温柔的笑容陪我走过最难的时光。愿你的每一天，都像今天一样被爱包围。</p>
+
     <div class="grid">
       <img src="mom1.jpg" alt="在西藏合影" class="hero-img">
       <img src="mom2.jpg" alt="一起做蛋糕" class="hero-img">
     </div>
+
     <div class="panel">
       <a class="btn" href="quiz.html?for=mom">下一步 → 小小互动</a>
     </div>
+
+    <!-- 连续播放的首发播放器（从这里或 dad.html 首次启动） -->
     <audio id="bgm" class="audio" controls src="a little story.mp3"></audio>
+    <p class="tip">（若浏览器拦截自动播放，请点一下 ▶ ）</p>
   </div>
-  <footer>（若音乐未自动播放，请手动点 ▶ ）</footer>
+
   <script>
     sessionStorage.setItem('who','mom');
-  </script>
-  <!-- 放在按钮面板后，</div> 上方或下方都行 -->
-<audio id="bgm" src="a little story.mp3"></audio>
 
-<script>
-/**
- * 连续播放（首页/祝福页启动，后续页面续播）
- * - 第一次进入：尝试自动播放，并标记 bgmStarted=1
- * - 之后页面：读取 sessionStorage 的进度与播放状态，续播
- */
-const KEY = 'bgmProgress';
-const STARTED = 'bgmStarted';
-const audio = document.getElementById('bgm');
+    const KEY = 'bgmProgress';
+    const STARTED = 'bgmStarted';
+    const audio = document.getElementById('bgm');
 
-function save() {
-  try {
-    sessionStorage.setItem(KEY, JSON.stringify({
-      t: audio.currentTime,
-      playing: !audio.paused,
-      src: audio.currentSrc
-    }));
-  } catch(e){}
-}
-
-async function resumeIfNeeded() {
-  const s = JSON.parse(sessionStorage.getItem(KEY) || '{}');
-  if (s.src === audio.currentSrc && typeof s.t === 'number') {
-    audio.currentTime = Math.max(0, s.t - 0.3); // 回退0.3秒防止断裂
-  }
-  if (s.playing) {
-    try { await audio.play(); } catch(e){}
-  }
-}
-
-// 定时保存 & 页面切换时保存
-const timer = setInterval(save, 1000);
-window.addEventListener('beforeunload', save);
-document.addEventListener('visibilitychange', () => { if (document.hidden) save(); });
-
-// 首次页面尝试启动；否则续播
-(async () => {
-  if (!sessionStorage.getItem(STARTED)) {
-    audio.volume = 0.85;
-    try {
-      await audio.play();
-      sessionStorage.setItem(STARTED, '1');
-      save();
-    } catch(e){
-      // 若浏览器拦截自动播放，你点一下播放器即可
+    function save() {
+      try {
+        sessionStorage.setItem(KEY, JSON.stringify({
+          t: audio.currentTime,
+          playing: !audio.paused,
+          src: audio.currentSrc
+        }));
+      } catch(e){}
     }
-  } else {
-    resumeIfNeeded();
-  }
-})();
-</script>
 
+    async function resumeIfNeeded() {
+      const s = JSON.parse(sessionStorage.getItem(KEY) || '{}');
+      if (s.src === audio.currentSrc && typeof s.t === 'number') {
+        audio.currentTime = Math.max(0, s.t - 0.3);
+      }
+      if (s.playing) {
+        try { await audio.play(); } catch(e){}
+      }
+    }
+
+    const timer = setInterval(save, 1000);
+    window.addEventListener('beforeunload', save);
+    document.addEventListener('visibilitychange', () => { if (document.hidden) save(); });
+
+    (async () => {
+      if (!sessionStorage.getItem(STARTED)) {
+        audio.volume = 0.85;
+        try {
+          await audio.play();
+          sessionStorage.setItem(STARTED, '1');
+          save();
+        } catch(e){}
+      } else {
+        resumeIfNeeded();
+      }
+    })();
+  </script>
 </body>
 </html>

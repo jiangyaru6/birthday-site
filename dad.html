@@ -1,0 +1,28 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>爸爸生日快乐</title>
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+  <div class="container center">
+    <h2>🎈 爸爸 46 岁生日快乐 🎈</h2>
+    <p>谢谢你总是在我身后默默守护。那些日子里你的身影，是我坚持的勇气来源。</p>
+    <div class="grid">
+      <img src="dad1.jpg" alt="和爸爸在红毯" class="hero-img">
+      <img src="dad2.jpg" alt="送手工小屋" class="hero-img">
+    </div>
+    <div class="panel">
+      <a class="btn" href="quiz.html?for=dad">下一步 → 小小互动</a>
+    </div>
+    <audio id="bgm" class="audio" controls src="a little story.mp3"></audio>
+  </div>
+  <footer>（若音乐未自动播放，请手动点 ▶ ）</footer>
+  <script>
+    // 记录身份并提示
+    sessionStorage.setItem('who','dad');
+  </script>
+</body>
+</html>

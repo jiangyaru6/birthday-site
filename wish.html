@@ -1,0 +1,73 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>许个愿吧</title>
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+  <div class="container center">
+    <h2>🙌 许个愿吧！</h2>
+    <div id="cake" class="panel">
+      <div class="cake">🎂</div>
+      <div id="candle" class="candles">🕯️🕯️🕯️</div>
+      <p>闭上眼，心里悄悄许个愿。点一下下面的按钮点亮蜡烛～</p>
+      <button class="btn" id="light">点亮蜡烛</button>
+    </div>
+
+    <div id="wishBox" class="panel hide">
+      <p>把愿望写下来（或留一句话给我）：</p>
+      <textarea id="wish" rows="4" style="width:100%;max-width:640px;border-radius:10px;padding:10px;"></textarea>
+      <div style="height:10px"></div>
+      <button class="btn" id="send">送出愿望</button>
+      <span style="display:inline-block;width:8px"></span>
+      <a class="btn ghost" href="index.html">返回首页</a>
+    </div>
+
+    <div id="egg" class="panel hide">
+      <p>💌 小彩蛋：谢谢你耐心看完。等你回家，我们再补一次线下的拥抱与合影。</p>
+    </div>
+  </div>
+
+  <!-- 自动切换到夜的钢琴曲 -->
+  <audio id="bgm" class="audio" controls src="夜的钢琴曲.mp3" autoplay></audio>
+
+  <script>
+    const candle = document.getElementById('candle');
+    const lightBtn = document.getElementById('light');
+    const wishBox = document.getElementById('wishBox');
+    const egg = document.getElementById('egg');
+    const bgm = document.getElementById('bgm');
+    // 点亮蜡烛动画（emoji 方案）
+    lightBtn.onclick = ()=>{
+      candle.textContent = "🕯️🕯️🕯️✨";
+      // 播放音乐（若浏览器拦截，用户需要手动点播放）
+      bgm.play().catch(()=>{});
+      setTimeout(()=>{
+        wishBox.classList.remove('hide');
+        // 10 秒后出现彩蛋
+        setTimeout(()=>egg.classList.remove('hide'), 10000);
+      }, 800);
+      // 放彩带
+      for(let i=0;i<14;i++){
+        const s = document.createElement('div');
+        s.className='fetti';
+        s.textContent = ["🎉","🎊","✨","💫","💖"][i%5];
+        s.style.left = (8+Math.random()*84)+'%';
+        s.style.fontSize = (18+Math.random()*18)+'px';
+        document.body.appendChild(s);
+        setTimeout(()=>s.remove(),2200);
+      }
+    };
+    // 送出愿望
+    document.getElementById('send').onclick = ()=>{
+      const who = sessionStorage.getItem('who') || new URLSearchParams(location.search).get('for') || '';
+      const text = document.getElementById('wish').value.trim();
+      alert("愿望收到啦！"+(who==="dad"?"爸爸":"妈妈")+"，谢谢你。");
+      // 简单持久：存在 localStorage（仅本机）
+      if(text) localStorage.setItem('wish_'+who, text);
+    };
+  </script>
+</body>
+</html>

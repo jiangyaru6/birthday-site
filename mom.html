@@ -23,5 +23,60 @@
   <script>
     sessionStorage.setItem('who','mom');
   </script>
+  <!-- 放在按钮面板后，</div> 上方或下方都行 -->
+<audio id="bgm" src="a little story.mp3"></audio>
+
+<script>
+/**
+ * 连续播放（首页/祝福页启动，后续页面续播）
+ * - 第一次进入：尝试自动播放，并标记 bgmStarted=1
+ * - 之后页面：读取 sessionStorage 的进度与播放状态，续播
+ */
+const KEY = 'bgmProgress';
+const STARTED = 'bgmStarted';
+const audio = document.getElementById('bgm');
+
+function save() {
+  try {
+    sessionStorage.setItem(KEY, JSON.stringify({
+      t: audio.currentTime,
+      playing: !audio.paused,
+      src: audio.currentSrc
+    }));
+  } catch(e){}
+}
+
+async function resumeIfNeeded() {
+  const s = JSON.parse(sessionStorage.getItem(KEY) || '{}');
+  if (s.src === audio.currentSrc && typeof s.t === 'number') {
+    audio.currentTime = Math.max(0, s.t - 0.3); // 回退0.3秒防止断裂
+  }
+  if (s.playing) {
+    try { await audio.play(); } catch(e){}
+  }
+}
+
+// 定时保存 & 页面切换时保存
+const timer = setInterval(save, 1000);
+window.addEventListener('beforeunload', save);
+document.addEventListener('visibilitychange', () => { if (document.hidden) save(); });
+
+// 首次页面尝试启动；否则续播
+(async () => {
+  if (!sessionStorage.getItem(STARTED)) {
+    audio.volume = 0.85;
+    try {
+      await audio.play();
+      sessionStorage.setItem(STARTED, '1');
+      save();
+    } catch(e){
+      // 若浏览器拦截自动播放，你点一下播放器即可
+    }
+  } else {
+    resumeIfNeeded();
+  }
+})();
+</script>
+
 </body>
 </html>

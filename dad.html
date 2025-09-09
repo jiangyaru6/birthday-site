@@ -10,19 +10,68 @@
   <div class="container center">
     <h2>🎈 爸爸 46 岁生日快乐 🎈</h2>
     <p>谢谢你总是在我身后默默守护。那些日子里你的身影，是我坚持的勇气来源。</p>
+
     <div class="grid">
       <img src="dad1.jpg" alt="和爸爸在红毯" class="hero-img">
       <img src="dad2.jpg" alt="送手工小屋" class="hero-img">
     </div>
+
     <div class="panel">
       <a class="btn" href="quiz.html?for=dad">下一步 → 小小互动</a>
     </div>
+
+    <!-- 连续播放的首发播放器（从这里或 mom.html 首次启动） -->
     <audio id="bgm" class="audio" controls src="a little story.mp3"></audio>
+    <p class="tip">（若浏览器拦截自动播放，请点一下 ▶ ）</p>
   </div>
-  <footer>（若音乐未自动播放，请手动点 ▶ ）</footer>
+
   <script>
-    // 记录身份并提示
+    // 记录身份
     sessionStorage.setItem('who','dad');
+
+    // 连续播放：首次页面尝试播放；后续页面续播
+    const KEY = 'bgmProgress';
+    const STARTED = 'bgmStarted';
+    const audio = document.getElementById('bgm');
+
+    function save() {
+      try {
+        sessionStorage.setItem(KEY, JSON.stringify({
+          t: audio.currentTime,
+          playing: !audio.paused,
+          src: audio.currentSrc
+        }));
+      } catch(e){}
+    }
+
+    async function resumeIfNeeded() {
+      const s = JSON.parse(sessionStorage.getItem(KEY) || '{}');
+      if (s.src === audio.currentSrc && typeof s.t === 'number') {
+        audio.currentTime = Math.max(0, s.t - 0.3); // 轻微回退防断裂
+      }
+      if (s.playing) {
+        try { await audio.play(); } catch(e){}
+      }
+    }
+
+    const timer = setInterval(save, 1000);
+    window.addEventListener('beforeunload', save);
+    document.addEventListener('visibilitychange', () => { if (document.hidden) save(); });
+
+    (async () => {
+      if (!sessionStorage.getItem(STARTED)) {
+        audio.volume = 0.85;
+        try {
+          await audio.play();
+          sessionStorage.setItem(STARTED, '1');
+          save();
+        } catch(e){
+          // 被拦截时，用户点击 ▶ 即可
+        }
+      } else {
+        resumeIfNeeded();
+      }
+    })();
   </script>
 </body>
 </html>

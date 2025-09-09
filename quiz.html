@@ -47,7 +47,38 @@
     </div>
   </div>
 
-  <audio id="bgm" class="audio" controls src="a little story.mp3" autoplay></audio>
+ <!-- 放在页面底部按钮面板附近 -->
+<audio id="bgm" src="a little story.mp3"></audio>
+
+<script>
+// 与祝福页一致的续播逻辑（只“续播”，不“首播”）
+const KEY = 'bgmProgress';
+const audio = document.getElementById('bgm');
+
+function save() {
+  try {
+    sessionStorage.setItem(KEY, JSON.stringify({
+      t: audio.currentTime,
+      playing: !audio.paused,
+      src: audio.currentSrc
+    }));
+  } catch(e){}
+}
+async function resume() {
+  const s = JSON.parse(sessionStorage.getItem(KEY) || '{}');
+  if (s.src === audio.currentSrc && typeof s.t === 'number') {
+    audio.currentTime = Math.max(0, s.t - 0.3);
+  }
+  if (s.playing) {
+    try { await audio.play(); } catch(e){}
+  }
+}
+setInterval(save, 1000);
+window.addEventListener('beforeunload', save);
+document.addEventListener('visibilitychange', () => { if (document.hidden) save(); });
+resume();
+</script>
+
 
   <script>
     const conf = ["🎉","✨","🎊","💖","💫","🌟"];

@@ -25,53 +25,12 @@
     <p class="tip">（若浏览器拦截自动播放，请点一下 ▶ ）</p>
   </div>
 
+<audio id="bgm" autoplay loop></audio>
   <script>
-    // 记录身份
-    sessionStorage.setItem('who','dad');
-
-    // 连续播放：首次页面尝试播放；后续页面续播
-    const KEY = 'bgmProgress';
-    const STARTED = 'bgmStarted';
     const audio = document.getElementById('bgm');
-
-    function save() {
-      try {
-        sessionStorage.setItem(KEY, JSON.stringify({
-          t: audio.currentTime,
-          playing: !audio.paused,
-          src: audio.currentSrc
-        }));
-      } catch(e){}
-    }
-
-    async function resumeIfNeeded() {
-      const s = JSON.parse(sessionStorage.getItem(KEY) || '{}');
-      if (s.src === audio.currentSrc && typeof s.t === 'number') {
-        audio.currentTime = Math.max(0, s.t - 0.3); // 轻微回退防断裂
-      }
-      if (s.playing) {
-        try { await audio.play(); } catch(e){}
-      }
-    }
-
-    const timer = setInterval(save, 1000);
-    window.addEventListener('beforeunload', save);
-    document.addEventListener('visibilitychange', () => { if (document.hidden) save(); });
-
-    (async () => {
-      if (!sessionStorage.getItem(STARTED)) {
-        audio.volume = 0.85;
-        try {
-          await audio.play();
-          sessionStorage.setItem(STARTED, '1');
-          save();
-        } catch(e){
-          // 被拦截时，用户点击 ▶ 即可
-        }
-      } else {
-        resumeIfNeeded();
-      }
-    })();
+    const src = sessionStorage.getItem('bgm') || 'a little story.mp3';
+    audio.src = src;
+    audio.play().catch(()=>{});
   </script>
 </body>
 </html>

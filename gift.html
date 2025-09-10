@@ -6,43 +6,51 @@
   <title>拆礼物小游戏</title>
   <link rel="stylesheet" href="style.css">
   <style>
-    .gift-box {
-      width: 200px;
-      height: 200px;
-      margin: 50px auto;
-      background: url('🎁') no-repeat center/contain;
-      cursor: pointer;
-      font-size: 100px;
-      text-align: center;
+    body {
+      background: #fff5f7;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      height: 100vh;
+      flex-direction: column;
+      font-family: "Microsoft Yahei", sans-serif;
     }
-    .hidden-msg {
+    .gift {
+      font-size: 100px;
+      cursor: pointer;
+      transition: transform 0.2s;
+    }
+    .gift.shake {
+      transform: rotate(-10deg);
+    }
+    .msg {
+      margin-top: 30px;
+      font-size: 22px;
+      color: #d6336c;
+      font-weight: bold;
       display: none;
-      font-size: 1.2em;
-      margin-top: 20px;
     }
   </style>
 </head>
 <body>
-  <div class="container center">
-    <h2>🎁 拆礼物小游戏 🎁</h2>
-    <p class="tip">👉 点击礼物盒看看里面藏着什么惊喜吧！</p>
-    <div id="gift" class="gift-box">🎁</div>
-    <div id="msg" class="hidden-msg">✨生日快乐！愿惊喜和好运常伴你们💖</div>
-    <a class="btn" href="index.html">← 返回首页</a>
-  </div>
-
-  <!-- 背景音乐 -->
-  <audio id="bgm" autoplay loop>
-    <source src="a little story.mp3" type="audio/mpeg">
-  </audio>
-
+  <p class="tip">👉 点击礼物盒看看里面藏着什么惊喜吧！</p>
+  <div class="gift" id="gift">🎁</div>
+  <div class="msg" id="msg">✨ 生日快乐！愿惊喜和好运常伴你们 ✨</div>
+  <a class="btn" href="index.html">← 返回首页</a>
   <script>
-    const gift = document.getElementById('gift');
-    const msg = document.getElementById('msg');
+    const gift = document.getElementById("gift");
+    const msg = document.getElementById("msg");
+    let clicks = 0;
 
-    gift.addEventListener('click', () => {
-      gift.style.display = 'none';
-      msg.style.display = 'block';
+    gift.addEventListener("click", () => {
+      clicks++;
+      gift.classList.add("shake");
+      setTimeout(()=>gift.classList.remove("shake"),200);
+
+      if(clicks>=3){
+        gift.textContent = "🎉";
+        msg.style.display = "block";
+      }
     });
   </script>
 </body>

@@ -30,25 +30,3 @@ p{line-height:1.8}
 .candles{font-size:46px;letter-spacing:6px}
 .hide{display:none}
 footer{margin:32px 0 16px;text-align:center;opacity:.7}
-#balloons {
-  position: fixed;
-  bottom: -150px;
-  left: 50%;
-  transform: translateX(-50%);
-  z-index: 999;
-  pointer-events: none;
-}
-
-.balloon {
-  position: absolute;
-  width: 40px;
-  height: 60px;
-  background: radial-gradient(circle at 30% 30%, #ff8a8a, #e63946);
-  border-radius: 50%;
-  animation: floatUp 10s linear infinite;
-}
-
-@keyframes floatUp {
-  0% { transform: translateY(0) scale(1); opacity: 1; }
-  100% { transform: translateY(-120vh) scale(1.2); opacity: 0; }
-}

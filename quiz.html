@@ -92,7 +92,7 @@
   (function resume(){
     const s = JSON.parse(sessionStorage.getItem(KEY) || '{}');
     // 没存过就兜底用文件名
-    const src = s && s.src ? s.src : 'a little story.mp3';
+    const src = s && s.src ? s.src : 'story.mp3';
 
     audio.preload = 'auto';
     audio.src = src;

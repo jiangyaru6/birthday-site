@@ -38,7 +38,7 @@
       100% { opacity:0; transform: translateY(-20px);}
     }
   </style>
-  </head>
+</head>
 <body>
   <style>
     .tip {
@@ -59,8 +59,6 @@
     <source src="birthday.mp3" type="audio/mpeg">
   </audio>
   
-</head>
-<body>
   <script>
     const wishes = [
       "健康常伴 🌿",
@@ -89,6 +87,22 @@
 
       setTimeout(()=>{wish.remove();},3000);
     });
+
+    // 关键修复：通过用户交互触发播放
+    const audio = document.getElementById('bgm');
+    function playAudio() {
+      audio.play().then(() => {
+        // 播放成功后移除事件监听
+        document.removeEventListener('click', playAudio);
+        document.removeEventListener('touchstart', playAudio);
+      }).catch(err => {
+        console.log('播放需要用户交互:', err);
+      });
+    }
+    
+    // 监听任何用户交互来触发播放
+    document.addEventListener('click', playAudio);
+    document.addEventListener('touchstart', playAudio); // 移动端
   </script>
 </body>
 </html>

@@ -1,0 +1,56 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>拆礼物小游戏</title>
+  <link rel="stylesheet" href="style.css">
+  <style>
+    body {
+      background: #fff5f7;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      height: 100vh;
+      flex-direction: column;
+      font-family: "Microsoft Yahei", sans-serif;
+    }
+    .gift {
+      font-size: 100px;
+      cursor: pointer;
+      transition: transform 0.2s;
+    }
+    .gift.shake {
+      transform: rotate(-10deg);
+    }
+    .msg {
+      margin-top: 30px;
+      font-size: 22px;
+      color: #d6336c;
+      font-weight: bold;
+      display: none;
+    }
+  </style>
+</head>
+<body>
+  <div class="gift" id="gift">🎁</div>
+  <div class="msg" id="msg">✨ 生日快乐！愿惊喜和好运常伴你们 ✨</div>
+
+  <script>
+    const gift = document.getElementById("gift");
+    const msg = document.getElementById("msg");
+    let clicks = 0;
+
+    gift.addEventListener("click", () => {
+      clicks++;
+      gift.classList.add("shake");
+      setTimeout(()=>gift.classList.remove("shake"),200);
+
+      if(clicks>=3){
+        gift.textContent = "🎉";
+        msg.style.display = "block";
+      }
+    });
+  </script>
+</body>
+</html>

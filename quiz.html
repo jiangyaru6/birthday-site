@@ -48,8 +48,11 @@
     </div>
   </div>
 
-  <script>
-  // 小彩带提示（保持不变）
+<!-- ✅ 只挂一个空播放器，不设 src、不自动播放 -->
+<audio id="bgm" class="audio" controls></audio>
+
+<script>
+  // —— 小彩带 & 跳转，这些保持你之前的逻辑 —— 
   const conf = ["🎉","✨","🎊","💖","💫","🌟"];
   function pop(text){
     alert(text);
@@ -67,48 +70,53 @@
     el.addEventListener('click',()=>pop(el.dataset.pop));
   });
 
-  // 读取身份并拼接跳转
   const who = new URLSearchParams(location.search).get('for') || sessionStorage.getItem('who') || 'dad';
   sessionStorage.setItem('who',who);
   document.getElementById('goWish').href = 'wish.html?for='+who;
 
-  // 🎵 连续播放：复用 index.html 中已经存在的播放器
+  // —— 连续播放：等到元数据加载好，再定位再播放 —— 
   const KEY = 'bgmProgress';
-  let audio = window.parent.document.getElementById('bgm');
-  if (!audio) {
-    // 如果父页面里没找到，就说明是直接刷新进来的，那就手动建一个
-    audio = document.createElement('audio');
-    audio.id = 'bgm';
-    audio.src = 'a little story.mp3';
-    audio.loop = true;
-    audio.autoplay = true;
-    document.body.appendChild(audio);
-  }
+  const audio = document.getElementById('bgm');
 
   function save() {
     try {
       sessionStorage.setItem(KEY, JSON.stringify({
         t: audio.currentTime,
         playing: !audio.paused,
-        src: audio.src
+        // 用 absolute 的 currentSrc 更稳；若没有就用 src
+        src: audio.currentSrc || audio.src
       }));
     } catch(e){}
   }
 
-  function resume() {
+  (function resume(){
     const s = JSON.parse(sessionStorage.getItem(KEY) || '{}');
-    if (s && s.src) {
-      audio.src = s.src;
-      if (typeof s.t === 'number') audio.currentTime = Math.max(0, s.t - 0.3);
-      if (s.playing) audio.play().catch(()=>{});
+    // 没存过就兜底用文件名
+    const src = s && s.src ? s.src : 'a little story.mp3';
+
+    audio.preload = 'auto';
+    audio.src = src;
+
+    // 关键：一定要等 loadedmetadata，再设 currentTime，再决定是否 play
+    const seekAndMaybePlay = async () => {
+      const t = (typeof s.t === 'number') ? Math.max(0, s.t - 0.25) : 0;
+      try { audio.currentTime = t; } catch(e){}
+      if (s.playing) {
+        try { await audio.play(); } catch(e){}
+      }
+      // 开始定时保存
+      setInterval(save, 1000);
+      window.addEventListener('beforeunload', save);
+      document.addEventListener('visibilitychange', () => { if (document.hidden) save(); });
+    };
+
+    if (audio.readyState >= 1) {
+      // 元数据已就绪，直接定位
+      seekAndMaybePlay();
+    } else {
+      audio.addEventListener('loadedmetadata', seekAndMaybePlay, { once: true });
     }
-  }
-
-  setInterval(save, 1000);
-  window.addEventListener('beforeunload', save);
-  document.addEventListener('visibilitychange', () => { if (document.hidden) save(); });
-
-  resume();
+  })();
 </script>
   
 </body>

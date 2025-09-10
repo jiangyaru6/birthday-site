@@ -16,16 +16,6 @@
       <a class="btn alt" href="mom.html">点这里看妈妈的祝福</a>
     </div>
     <p class="tip">（提示：为保证音乐顺畅，进入后请点一下▶播放）</p>
-  <div id="balloons"></div>
+  </div>
 </body>
-<script>
-  setInterval(()=>{
-  const b = document.createElement('div');
-  b.className = 'balloon';
-  b.style.left = Math.random()*100 + 'vw';
-  b.style.background = `hsl(${Math.random()*360},70%,60%)`;
-  document.getElementById('balloons').appendChild(b);
-  setTimeout(()=>b.remove(),10000);
-}, 800);
-</script>
 </html>

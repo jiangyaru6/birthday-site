@@ -4,20 +4,111 @@
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <title>生日快乐｜入口</title>
-  <link rel="stylesheet" href="style.css">
+  <style>
+    /* 基础按钮样式 */
+    .btn {
+      display: inline-block;
+      padding: 12px 24px;
+      border-radius: 30px;
+      text-decoration: none;
+      font-weight: bold;
+      color: white;
+      transition: transform 0.2s, box-shadow 0.2s;
+      border: none;
+      cursor: pointer;
+      text-align: center;
+      font-size: 16px;
+    }
+    
+    /* 按钮悬停效果 */
+    .btn:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 4px 8px rgba(0,0,0,0.15);
+    }
+    
+    /* 各个按钮的颜色 */
+    .btn.dad {
+      background-color: #4285f4; /* 蓝色 */
+    }
+    
+    .btn.mom {
+      background-color: #ea4335; /* 红色 */
+    }
+    
+    .btn.gift {
+      background-color: #fbbc05; /* 黄色 */
+      color: #333; /* 黄色按钮用深色文字更清晰 */
+    }
+    
+    .btn.stars {
+      background-color: #34a853; /* 绿色 */
+    }
+    
+    /* 容器和布局样式 */
+    .container {
+      max-width: 800px;
+      margin: 0 auto;
+      padding: 20px;
+    }
+    
+    .center {
+      text-align: center;
+      margin-top: 50px;
+    }
+    
+    h1 {
+      color: #333;
+      margin-bottom: 20px;
+    }
+    
+    p {
+      color: #555;
+      font-size: 18px;
+      margin-bottom: 30px;
+    }
+    
+    .panel {
+      margin: 30px 0;
+      padding: 20px;
+    }
+    
+    .tip {
+      color: #666;
+      margin-top: 40px;
+      font-size: 0.9em;
+    }
+    
+    /* 响应式调整 */
+    @media (max-width: 600px) {
+      .panel {
+        display: flex;
+        flex-direction: column;
+        gap: 15px;
+      }
+      
+      .btn {
+        width: 100%;
+        box-sizing: border-box;
+      }
+      
+      .panel span {
+        display: none !important;
+      }
+    }
+  </style>
 </head>
 <body>
   <div class="container center">
     <h1>🎂 生日快乐！🎉</h1>
     <p>亲爱的爸爸妈妈，这是一份小小的远程生日仪式。先选一个入口👇</p>
     <div class="panel">
-      <a class="btn" href="dad.html">点这里看爸爸的祝福</a>
+      <a class="btn dad" href="dad.html">点这里看爸爸的祝福</a>
       <span style="display:inline-block;width:12px"></span>
-      <a class="btn alt" href="mom.html">点这里看妈妈的祝福</a>
+      <a class="btn mom" href="mom.html">点这里看妈妈的祝福</a>
       <span style="display:inline-block;width:12px"></span>
-      <a class="btn" href="gift.html">🎁 拆礼物小游戏</a>
+      <a class="btn gift" href="gift.html">🎁 拆礼物小游戏</a>
       <span style="display:inline-block;width:12px"></span>
-      <a class="btn alt" href="stars.html">🌌 星空许愿池</a>
+      <a class="btn stars" href="stars.html">🌌 星空许愿池</a>
     </div>
     <p class="tip">（提示：为保证音乐顺畅，进入后请点一下▶播放）</p>
   </div>

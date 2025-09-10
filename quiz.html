@@ -48,66 +48,68 @@
     </div>
   </div>
 
-   <!-- quiz.html 里只放一个空播放器，不主动加载 -->
-  <audio id="bgm" class="audio" controls></audio>
-
   <script>
-    // 小彩带提示（保持不变）
-    const conf = ["🎉","✨","🎊","💖","💫","🌟"];
-    function pop(text){
-      alert(text);
-      for(let i=0;i<12;i++){
-        const s = document.createElement('div');
-        s.className='fetti';
-        s.textContent = conf[Math.floor(Math.random()*conf.length)];
-        s.style.left = (10+Math.random()*80)+'%';
-        s.style.fontSize = (18+Math.random()*18)+'px';
-        document.body.appendChild(s);
-        setTimeout(()=>s.remove(),2200);
-      }
+  // 小彩带提示（保持不变）
+  const conf = ["🎉","✨","🎊","💖","💫","🌟"];
+  function pop(text){
+    alert(text);
+    for(let i=0;i<12;i++){
+      const s = document.createElement('div');
+      s.className='fetti';
+      s.textContent = conf[Math.floor(Math.random()*conf.length)];
+      s.style.left = (10+Math.random()*80)+'%';
+      s.style.fontSize = (18+Math.random()*18)+'px';
+      document.body.appendChild(s);
+      setTimeout(()=>s.remove(),2200);
     }
-    document.querySelectorAll('.opt').forEach(el=>{
-      el.addEventListener('click',()=>pop(el.dataset.pop));
-    });
+  }
+  document.querySelectorAll('.opt').forEach(el=>{
+    el.addEventListener('click',()=>pop(el.dataset.pop));
+  });
 
-    // 读取身份并拼接跳转
-    const who = new URLSearchParams(location.search).get('for') || sessionStorage.getItem('who') || 'dad';
-    sessionStorage.setItem('who',who);
-    document.getElementById('goWish').href = 'wish.html?for='+who;
+  // 读取身份并拼接跳转
+  const who = new URLSearchParams(location.search).get('for') || sessionStorage.getItem('who') || 'dad';
+  sessionStorage.setItem('who',who);
+  document.getElementById('goWish').href = 'wish.html?for='+who;
 
-    // 🎵 连续播放逻辑（只续播）
-    const KEY = 'bgmProgress';
-    const audio = document.getElementById('bgm');
+  // 🎵 连续播放：复用 index.html 中已经存在的播放器
+  const KEY = 'bgmProgress';
+  let audio = window.parent.document.getElementById('bgm');
+  if (!audio) {
+    // 如果父页面里没找到，就说明是直接刷新进来的，那就手动建一个
+    audio = document.createElement('audio');
+    audio.id = 'bgm';
+    audio.src = 'a little story.mp3';
+    audio.loop = true;
+    audio.autoplay = true;
+    document.body.appendChild(audio);
+  }
 
-    async function resume() {
-      const s = JSON.parse(sessionStorage.getItem(KEY) || '{}');
-      if (s && s.src) {
-        audio.src = s.src;   // 恢复上一个页面的音频
-        if (typeof s.t === 'number') {
-          audio.currentTime = Math.max(0, s.t - 0.3);
-        }
-        if (s.playing) {
-          try { await audio.play(); } catch(e){}
-        }
-      }
+  function save() {
+    try {
+      sessionStorage.setItem(KEY, JSON.stringify({
+        t: audio.currentTime,
+        playing: !audio.paused,
+        src: audio.src
+      }));
+    } catch(e){}
+  }
+
+  function resume() {
+    const s = JSON.parse(sessionStorage.getItem(KEY) || '{}');
+    if (s && s.src) {
+      audio.src = s.src;
+      if (typeof s.t === 'number') audio.currentTime = Math.max(0, s.t - 0.3);
+      if (s.playing) audio.play().catch(()=>{});
     }
+  }
 
-    function save() {
-      try {
-        sessionStorage.setItem(KEY, JSON.stringify({
-          t: audio.currentTime,
-          playing: !audio.paused,
-          src: audio.src
-        }));
-      } catch(e){}
-    }
+  setInterval(save, 1000);
+  window.addEventListener('beforeunload', save);
+  document.addEventListener('visibilitychange', () => { if (document.hidden) save(); });
 
-    setInterval(save, 1000);
-    window.addEventListener('beforeunload', save);
-    document.addEventListener('visibilitychange', () => { if (document.hidden) save(); });
-
-    resume();
-  </script>
+  resume();
+</script>
   
 </body>
 </html>

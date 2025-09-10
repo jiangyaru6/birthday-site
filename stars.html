@@ -1,0 +1,73 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>星空许愿池</title>
+  <style>
+    body {
+      margin: 0;
+      background: radial-gradient(ellipse at bottom, #1b2735 0%, #090a0f 100%);
+      height: 100vh;
+      overflow: hidden;
+      position: relative;
+      cursor: crosshair;
+    }
+    .star {
+      position: absolute;
+      color: #fff;
+      font-size: 16px;
+      animation: twinkle 2s infinite alternate;
+    }
+    @keyframes twinkle {
+      from { opacity: 0.3; transform: scale(0.8);}
+      to   { opacity: 1; transform: scale(1.2);}
+    }
+    .wish {
+      position: absolute;
+      background: rgba(255,255,255,0.9);
+      color: #333;
+      padding: 6px 12px;
+      border-radius: 8px;
+      font-size: 14px;
+      animation: fadeout 3s forwards;
+    }
+    @keyframes fadeout {
+      0% { opacity:1; }
+      80% { opacity:1; }
+      100% { opacity:0; transform: translateY(-20px);}
+    }
+  </style>
+</head>
+<body>
+  <script>
+    const wishes = [
+      "健康常伴 🌿",
+      "笑口常开 😄",
+      "好运连连 🍀",
+      "心想事成 🌈",
+      "岁岁平安 ✨",
+      "快乐永远 💖"
+    ];
+    document.body.addEventListener("click", e=>{
+      // 星星
+      const star = document.createElement("div");
+      star.textContent = "⭐";
+      star.className="star";
+      star.style.left = e.pageX+"px";
+      star.style.top = e.pageY+"px";
+      document.body.appendChild(star);
+
+      // 随机祝福
+      const wish = document.createElement("div");
+      wish.className="wish";
+      wish.textContent = wishes[Math.floor(Math.random()*wishes.length)];
+      wish.style.left = (e.pageX+20)+"px";
+      wish.style.top = (e.pageY-20)+"px";
+      document.body.appendChild(wish);
+
+      setTimeout(()=>{wish.remove();},3000);
+    });
+  </script>
+</body>
+</html>

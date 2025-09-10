@@ -56,6 +56,21 @@
     window.addEventListener('beforeunload', save);
     document.addEventListener('visibilitychange', () => { if (document.hidden) save(); });
 
+    // 关键修复：通过用户交互触发播放
+    function playAudio() {
+      audio.play().then(() => {
+        // 播放成功后移除事件监听
+        document.removeEventListener('click', playAudio);
+        document.removeEventListener('touchstart', playAudio);
+      }).catch(err => {
+        console.log('播放需要用户交互:', err);
+      });
+    }
+    
+    // 监听任何用户交互来触发播放
+    document.addEventListener('click', playAudio);
+    document.addEventListener('touchstart', playAudio); // 移动端
+
     (async () => {
       if (!sessionStorage.getItem(STARTED)) {
         audio.volume = 0.85;

@@ -20,17 +20,36 @@
       <a class="btn" href="quiz.html?for=dad">下一步 → 小小互动</a>
     </div>
 
-    <!-- 连续播放的首发播放器（从这里或 mom.html 首次启动） -->
-    <audio id="bgm" class="audio" controls src="story.mp3"></audio>
-    <p class="tip">（若浏览器拦截自动播放，请点一下 ▶ ）</p>
+    <!-- 只保留一个音频元素 -->
+    <audio id="bgm" class="audio" controls loop></audio>
+    <p class="tip">（若未自动播放，请点一下 ▶ ）</p>
   </div>
 
-<audio id="bgm" autoplay loop></audio>
   <script>
+    // 获取URL参数中的音乐文件
+    const urlParams = new URLSearchParams(window.location.search);
+    const musicSrc = urlParams.get('music') || 'story.mp3';
+    
     const audio = document.getElementById('bgm');
-    const src = sessionStorage.getItem('bgm') || 'story.mp3';
-    audio.src = src;
-    audio.play().catch(()=>{});
+    audio.src = musicSrc;
+    
+    // 关键修复：通过用户交互触发播放
+    function playAudio() {
+      audio.play().then(() => {
+        // 播放成功后移除事件监听
+        document.removeEventListener('click', playAudio);
+        document.removeEventListener('touchstart', playAudio);
+      }).catch(err => {
+        console.log('播放需要用户交互:', err);
+      });
+    }
+    
+    // 监听任何用户交互来触发播放
+    document.addEventListener('click', playAudio);
+    document.addEventListener('touchstart', playAudio); // 移动端
+    
+    // 尝试自动播放（多数情况会失败，但可以保留）
+    audio.play().catch(() => {});
   </script>
 </body>
 </html>

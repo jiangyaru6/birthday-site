@@ -28,7 +28,7 @@
 <audio id="bgm" autoplay loop></audio>
   <script>
     const audio = document.getElementById('bgm');
-    const src = sessionStorage.getItem('bgm') || 'a little story.mp3';
+    const src = sessionStorage.getItem('bgm') || 'story.mp3';
     audio.src = src;
     audio.play().catch(()=>{});
   </script>

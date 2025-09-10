@@ -10,34 +10,24 @@
   <div class="container center">
     <h1>🎂 生日快乐！🎉</h1>
     <p>亲爱的爸爸妈妈，这是一份小小的远程生日仪式。先选一个入口👇记得打开声音哦</p>
-
-    <!-- 👇 新增音乐按钮和播放器 -->
-    <button id="startMusic" class="btn">🎵 点击开启音乐</button>
-    <audio id="bgm" src="a little story.mp3" loop></audio>
-    <!-- 👆 新增部分结束 -->
-
     <div class="panel">
-      <a class="btn" href="dad.html">点这里看爸爸的祝福</a>
+      <a class="btn" href="dad.html" onclick="startMusic('a little story.mp3')">点这里看爸爸的祝福</a>
       <span style="display:inline-block;width:12px"></span>
-      <a class="btn alt" href="mom.html">点这里看妈妈的祝福</a>
+      <a class="btn alt" href="mom.html" onclick="startMusic('a little story.mp3')">点这里看妈妈的祝福</a>
       <span style="display:inline-block;width:12px"></span>
       <a class="btn" href="gift.html">🎁 拆礼物小游戏</a>
       <span style="display:inline-block;width:12px"></span>
-      <a class="btn alt" href="stars.html">🌌 星空许愿池</a>
+      <a class="btn alt" href="stars.html" onclick="startMusic('夜的钢琴曲.mp3')">🌌 星空许愿池</a>
     </div>
-
-    <p class="tip">（提示：请先点击「🎵 点击开启音乐」按钮，之后所有页面都会顺利播放音乐）</p>
+    <p class="tip">（提示：点入口按钮时音乐会自动播放哦）</p>
   </div>
 
-  <!-- 脚本：控制音乐播放 -->
   <script>
-    const btn = document.getElementById("startMusic");
-    const bgm = document.getElementById("bgm");
-
-    btn.addEventListener("click", () => {
-      bgm.play();
-      btn.style.display = "none"; // 播放后隐藏按钮
-    });
+    function startMusic(src) {
+      sessionStorage.setItem('bgm', src);
+      const audio = new Audio(src);
+      audio.play().catch(()=>{}); // 第一次点击时解锁
+    }
   </script>
 </body>
 </html>

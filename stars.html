@@ -3,58 +3,76 @@
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>星空许愿</title>
-  <link rel="stylesheet" href="style.css">
+  <title>星空许愿池</title>
   <style>
     body {
-      background: black;
-      overflow: hidden;
       margin: 0;
+      background: radial-gradient(ellipse at bottom, #1b2735 0%, #090a0f 100%);
       height: 100vh;
-      cursor: pointer;
-      color: white;
-    }
-    .tip {
-      position: absolute;
-      top: 10px;
-      width: 100%;
-      text-align: center;
-      font-size: 1.2em;
-      color: #ffd700;
+      overflow: hidden;
+      position: relative;
+      cursor: crosshair;
     }
     .star {
       position: absolute;
-      border-radius: 50%;
-      background: white;
-      box-shadow: 0 0 10px white;
+      color: #fff;
+      font-size: 16px;
+      animation: twinkle 2s infinite alternate;
     }
-    .back {
+    @keyframes twinkle {
+      from { opacity: 0.3; transform: scale(0.8);}
+      to   { opacity: 1; transform: scale(1.2);}
+    }
+    .wish {
       position: absolute;
-      bottom: 20px;
-      width: 100%;
+      background: rgba(255,255,255,0.9);
+      color: #333;
+      padding: 6px 12px;
+      border-radius: 8px;
+      font-size: 14px;
+      animation: fadeout 3s forwards;
+    }
+    @keyframes fadeout {
+      0% { opacity:1; }
+      80% { opacity:1; }
+      100% { opacity:0; transform: translateY(-20px);}
+    }
+    /* 按钮和提示文字样式 */
+    .audio-panel {
       text-align: center;
+      margin-top: 20px;
+    }
+    .btn {
+      display: inline-block;
+      padding: 8px 16px;
+      background-color: #4285f4;
+      color: white;
+      border-radius: 4px;
+      text-decoration: none;
+      cursor: pointer;
+    }
+    .tip {
+      color: white;
+      margin-top: 10px;
     }
   </style>
 </head>
 <body>
+  <div class="audio-panel">
+    <button class="btn" id="playBtn">播放音乐</button>
+    <p class="tip">（若浏览器拦截自动播放，请点一下 ▶ ）</p>
+  </div>
   <div class="tip">🌌 在屏幕上任意点击，就能点亮一颗星星，多点几次就能收获满天星光！</div>
   <div class="back">
     <a class="btn" href="index.html">← 返回首页</a>
   </div>
 
-  </div>
-
-    <!-- 连续播放的首发播放器（从这里或 dad.html 首次启动） -->
-    <audio id="bgm" class="audio" controls src="birthday.mp3"></audio>
-    <p class="tip">（若浏览器拦截自动播放，请点一下 ▶ ）</p>
-  </div>
-
   <!-- 背景音乐 -->
-  <audio id="bgm" autoplay loop>
-    <source src="night.mp3" type="audio/mpeg">
+  <audio id="bgm" loop>
+    <source src="birthday.mp3" type="audio/mpeg">
   </audio>
-
- <script>
+  
+  <script>
     const wishes = [
       "健康常伴 🌿",
       "笑口常开 😄",
@@ -82,7 +100,15 @@
 
       setTimeout(()=>{wish.remove();},3000);
     });
+
+    const audio = document.getElementById('bgm');
+    const playBtn = document.getElementById('playBtn');
+
+    playBtn.addEventListener('click', () => {
+      audio.play().catch(err => {
+        console.log('播放需要用户交互:', err);
+      });
+    });
   </script>
 </body>
 </html>
-

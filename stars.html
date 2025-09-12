@@ -45,7 +45,7 @@
   </div>
 
     <!-- 连续播放的首发播放器（从这里或 dad.html 首次启动） -->
-    <audio id="bgm" class="audio" controls src="story.mp3"></audio>
+    <audio id="bgm" class="audio" controls src="birthday.mp3"></audio>
     <p class="tip">（若浏览器拦截自动播放，请点一下 ▶ ）</p>
   </div>
 
@@ -54,20 +54,33 @@
     <source src="night.mp3" type="audio/mpeg">
   </audio>
 
-  <script>
-    document.body.addEventListener('click', (e) => {
-      const star = document.createElement('div');
-      star.className = 'star';
-      const size = Math.random() * 6 + 4;
-      star.style.width = size + 'px';
-      star.style.height = size + 'px';
-      star.style.left = e.pageX - size / 2 + 'px';
-      star.style.top = e.pageY - size / 2 + 'px';
+ <script>
+    const wishes = [
+      "健康常伴 🌿",
+      "笑口常开 😄",
+      "好运连连 🍀",
+      "心想事成 🌈",
+      "岁岁平安 ✨",
+      "快乐永远 💖"
+    ];
+    document.body.addEventListener("click", e=>{
+      // 星星
+      const star = document.createElement("div");
+      star.textContent = "⭐";
+      star.className="star";
+      star.style.left = e.pageX+"px";
+      star.style.top = e.pageY+"px";
       document.body.appendChild(star);
 
-      setTimeout(() => {
-        star.remove();
-      }, 4000);
+      // 随机祝福
+      const wish = document.createElement("div");
+      wish.className="wish";
+      wish.textContent = wishes[Math.floor(Math.random()*wishes.length)];
+      wish.style.left = (e.pageX+20)+"px";
+      wish.style.top = (e.pageY-20)+"px";
+      document.body.appendChild(wish);
+
+      setTimeout(()=>{wish.remove();},3000);
     });
   </script>
 </body>

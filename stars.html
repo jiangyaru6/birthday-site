@@ -64,7 +64,7 @@
   </div>
   <div class="tip">🌌 在屏幕上任意点击，就能点亮一颗星星，多点几次就能收获满天星光！</div>
   <div class="back">
-    <a class="btn" href="index.html">← 返回首页</a>
+    <a class="btn" href="index.html">← 返回首页查看其他互动</a>
   </div>
 
   <!-- 背景音乐 -->
@@ -104,6 +104,12 @@
     const audio = document.getElementById('bgm');
     const playBtn = document.getElementById('playBtn');
 
+    // 优先尝试自动播放（被拦截时不报错，后续用按钮手动触发）
+    audio.play().catch(err => {
+      console.log('自动播放被拦截，可点击按钮手动播放:', err);
+    });
+
+    // 按钮手动播放逻辑（自动播放失败时生效）
     playBtn.addEventListener('click', () => {
       audio.play().catch(err => {
         console.log('播放需要用户交互:', err);
